@@ -47,6 +47,7 @@ struct
     {
       gpgme_pubkey_algo_t algo;
       const char *keyid;
+      const char *fpr;
       const char *name;
       const char *comment;
       const char *email;
@@ -59,13 +60,13 @@ keys[] =
   {
     { "A0FF4590BB6122EDEF6E3C542D727CC768697734", "6AE6D7EE46A871F8",
       { { "Alfa Test", "demo key", "alfa@example.net",
-          { GPGME_PK_DSA, "2D727CC768697734",
+          { GPGME_PK_DSA, "2D727CC768697734", "A0FF4590BB6122EDEF6E3C542D727CC768697734",
 	    "Alfa Test", "demo key", "alfa@example.net", 19, 1 } },
 	{ "Alpha Test", "demo key", "alpha@example.net",
-          { GPGME_PK_DSA, "2D727CC768697734",
+          { GPGME_PK_DSA, "2D727CC768697734", NULL,
 	    "Alfa Test", "demo key", "alfa@example.net", 19, 1 } },
 	{ "Alice", "demo key", NULL,
-          { GPGME_PK_DSA, "2D727CC768697734",
+          { GPGME_PK_DSA, "2D727CC768697734", "A0FF4590BB6122EDEF6E3C542D727CC768697734",
 	    "Alfa Test", "demo key", "alfa@example.net", 19, 1 } } } },
     { NULL }
   };
@@ -393,6 +394,12 @@ main (void)
 		   key->uids->signatures->keyid);
 	  exit (1);
 	}
+      if (strcmp (keys[i].uid[0].sig.fpr, key->uids->signatures->fpr))
+	{
+	  fprintf (stderr, "Unexpected fingerprint in first user ID sig: %s\n",
+		   key->uids->signatures->fpr);
+	  exit (1);
+	}
       if (strcmp (keys[i].uid[0].sig.name, key->uids->signatures->name))
 	{
 	  fprintf (stderr, "Unexpected name in first user ID sig: %s\n",
@@ -482,6 +489,14 @@ main (void)
 		   key->uids->next->signatures->keyid);
 	  exit (1);
 	}
+      if ((key->uids->next->signatures->fpr == NULL) != (keys[i].uid[1].sig.fpr == NULL) ||
+          (key->uids->next->signatures->fpr != NULL &&
+           strcmp (keys[i].uid[1].sig.fpr, key->uids->next->signatures->fpr)))
+	{
+	  fprintf (stderr, "Unexpected fingerprint in second user ID sig: %s\n",
+		   key->uids->next->signatures->fpr);
+	  exit (1);
+	}
       if (strcmp (keys[i].uid[1].sig.name, key->uids->next->signatures->name))
 	{
 	  fprintf (stderr, "Unexpected name in second user ID sig: %s\n",
@@ -569,6 +584,12 @@ main (void)
 	{
 	  fprintf (stderr, "Unexpected key ID in third user ID sig: %s\n",
 		   key->uids->next->next->signatures->keyid);
+	  exit (1);
+	}
+      if (strcmp (keys[i].uid[2].sig.fpr, key->uids->next->next->signatures->fpr))
+	{
+	  fprintf (stderr, "Unexpected fingerprint in third user ID sig: %s\n",
+		   key->uids->next->next->signatures->fpr);
 	  exit (1);
 	}
       if (strcmp (keys[i].uid[2].sig.name, key->uids->next->next->signatures->name))

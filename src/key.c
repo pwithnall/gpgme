@@ -413,6 +413,7 @@ gpgme_key_unref (gpgme_key_t key)
 	    }
 
 	  free (keysig->trust_scope);
+          free (keysig->fpr);
           free (keysig);
 	  keysig = next_keysig;
         }

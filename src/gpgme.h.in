@@ -755,6 +755,10 @@ struct _gpgme_key_sig
 
   /* The scope of a trust signature.  Might be NULL.  */
   char *trust_scope;
+
+  /* The fingerprint of the key used to create the signature. Might be NULL if
+   * the signature didn’t verify correctly. */
+  char *fpr;
 };
 
 

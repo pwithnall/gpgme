@@ -3966,6 +3966,10 @@ This is the email component of @code{uid}, if available.
 
 @item gpgme_sig_notation_t notations
 This is a linked list with the notation data and policy URLs.
+
+@item char *fpr
+The fingerprint of the key used to create the signature, if available. It might
+not be available if the signature doesn’t verify.
 @end table
 @end deftp
 

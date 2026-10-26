@@ -1094,6 +1094,15 @@ keylist_colon_handler (void *priv, char *line)
 	      keysig->exportable = 1;
 	  }
 
+      /* Field 13 has the fingerprint, but it may only be filled if the
+       * signature verified correctly. */
+      if (fields >= 13 && field[12] && *field[12])
+        {
+          keysig->fpr = strdup (field[12]);
+          if (!keysig->fpr)
+            return gpg_error_from_syserror ();
+        }
+
       opd->tmp_keysig = keysig;
       break;
 

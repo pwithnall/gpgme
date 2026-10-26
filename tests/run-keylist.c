@@ -426,6 +426,7 @@ main (int argc, char **argv)
             {
               printf ("signature %d: %s\n", nsigs, nonnull (ks->uid));
               printf ("       keyid: %s\n", nonnull (ks->keyid));
+              printf ("         fpr: %s\n", nonnull (ks->fpr));
               printf ("     created: %s\n", isotimestr(ks->timestamp));
               printf ("     expires: %s\n", isotimestr(ks->expires));
               printf ("       class: %x\n", ks->sig_class);

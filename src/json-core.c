@@ -622,6 +622,7 @@ key_sig_to_json (gpgme_key_sig_t sig)
   xjson_AddStringToObject0 (result, "pubkey_algo_name",
                             gpgme_pubkey_algo_name (sig->pubkey_algo));
   xjson_AddStringToObject0 (result, "keyid", sig->keyid);
+  xjson_AddStringToObject0 (result, "fpr", sig->fpr);
   xjson_AddStringToObject0 (result, "status", gpgme_strerror (sig->status));
   xjson_AddStringToObject0 (result, "name", sig->name);
   xjson_AddStringToObject0 (result, "email", sig->email);
